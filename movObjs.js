@@ -2,9 +2,9 @@ var movObjs = document.getElementById("movObjs").getContext ("2d");
 
 //Основной объект
 	//координаты положения основного объекта
-var mainY = 200,
-	mainX = 0,
-	//скорость объекта
+var mainX = 0,
+	mainY = 200,
+	//скорость основного объекта
 	mainSpeed = 4;
 var shootX1 = mainX+95,
 	shootY1 = mainY+80;
@@ -24,26 +24,51 @@ function Airplane(){
 		movObjs.fillRect(shootX1-10,shootY1,10,4);
 		movObjs.fillRect(shootX1,shootY1-20,10,4);
 	}
-}
-
-Airplane();
-//Звуки
-/*
-var soundAirplane = document.getElementById("airplanesound");
-soundAirplane.play()
-setInterval(function(){
-	soundAirplane.currentTime = 0;
-	soundAirplane.play();
-	console.log("repeat");
-	}, 13000
-);*/
-function soundShot(){
-	var sound = document.getElementById("shot");
-	setInterval(function(){
-		sound.currentTime = 0;
-		sound.play();
-	},510)
-}
+};
+// Конструктор для вражеских объектов
+var Enemy = function(){
+	this.param = {
+		x: 1000,
+		y: 200,
+		speed: 2,
+		bottomLimit: 400,
+		topLimit: 200
+	}
+};
+Enemy.prototype.moving = function(){
+		var img = new Image();
+		img.src = "images/airplane02.png";
+		movObjs.drawImage(img,this.param.x,this.param.y);
+		this.param.x -= this.param.speed;
+		if (this.param.x < -100){
+			this.param.x = 1000;
+		}
+		this.enMoveUp = function(){
+			this.param.y -= this.param.speed;
+		}
+		this.enMoveDown = function(){
+			this.param.y += this.param.speed;
+		}
+		switch(this.param.y){
+			case this.param.bottomLimit: this.moveSwitch = "up"; break;
+			case this.param.topLimit: this.moveSwitch = "down"; break;
+		}
+		switch(this.moveSwitch){
+			case "up": this.enMoveUp(); break;
+			case "down": this.enMoveDown(); break;
+		}
+	};
+//Создание вражеских объектов
+var enemy1 = new Enemy();
+var enemy2 = new Enemy();
+	enemy2.param.x = 1366;
+	enemy2.param.bottomLimit = 200;
+	enemy2.param.topLimit = 0;
+var enemy3 = new Enemy();
+	enemy3.param.y = 100;
+	enemy3.param.x = 1733;
+	enemy3.param.bottomLimit = 300;
+	enemy3.param.topLimit = 100;
 
 //Движок
 var keys = {
@@ -105,6 +130,9 @@ function engineMove(){
 	if(isKeyDown("ArrowRight")){
 		moveRight();
 	}
+	enemy1.moving();
+	enemy2.moving();
+	enemy3.moving();
 	Airplane.shoot();
 	requestAnimationFrame(engineMove);
 }
@@ -115,9 +143,6 @@ function engineMove(){
 window.onload = function(){
 	window.onkeydown = function(event){
 		keyDown[event.keyCode] = true;
-		if (event.keyCode == 32) {
-			console.log("выстрел");
-		};
 	};
 	window.onkeyup = function(event){
 		keyDown[event.keyCode] = false;
