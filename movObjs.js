@@ -22,7 +22,7 @@ function Airplane(){
 			shootX1 = mainX+95;
 			shootY1 = mainY+80;
 		}
-		shootX1 += 10;
+		shootX1 += 15;
 		movObjs.fillRect(shootX1-10,shootY1,10,4);
 		movObjs.fillRect(shootX1,shootY1-20,10,4);
 	}
@@ -32,25 +32,25 @@ var Enemy = function(){
 	this.param = {
 		x: 1000,
 		y: 200,
-		speed: 4,
 		bottomLimit: 400,
 		topLimit: 200
 	}
 };
+Enemy.prototype.speed = 5;
 Enemy.prototype.moving = function(){
 		var img = new Image();
 		img.src = "images/airplane02.png";
 		movObjs.drawImage(img,this.param.x,this.param.y);
-		this.param.x -= this.param.speed;
+		this.param.x -= this.speed;
 		if (this.param.x < -100){
 			this.param.x = 1000;
 			counterMissed += 1;
 		}
 		this.enMoveUp = function(){
-			this.param.y -= this.param.speed;
+			this.param.y -= this.speed;
 		}
 		this.enMoveDown = function(){
-			this.param.y += this.param.speed;
+			this.param.y += this.speed;
 		}
 		switch(this.param.y){
 			case this.param.bottomLimit: this.moveSwitch = "up"; break;
@@ -78,7 +78,6 @@ var enemy4 = new Enemy();
 	enemy4.param.y = 350;
 	enemy4.param.bottomLimit = 350;
 	enemy4.param.topLimit = 50;
-
 //Попадание пули во вражеский объект
 function crash(){
 	if((enemy1.param.x + 40) > shootX1 && (enemy1.param.x) < shootX1 && (enemy1.param.y + 110) > shootY1 && (enemy1.param.y + 10) < shootY1){
@@ -133,25 +132,23 @@ function countDestroy(){
 //GameOver
 function gameOver(){
 	if (counterMissed >= 5){
+		movObjs.fillStyle = "rgba(255,140,95,0.5)";
+		movObjs.fillRect(0,0,1000,500);
 		movObjs.font = "bold 160px sans-serif";
 		movObjs.fillStyle = "#740B0B";
 		movObjs.fillText("GAME OVER", 10, 300);
-		enemy1.param.speed = 0;
-		enemy2.param.speed = 0;
-		enemy3.param.speed = 0;
-		enemy4.param.speed = 0;
+		Enemy.prototype.speed = 0;
 	}
 };
 //YouWin
 function youWin(){
 	if (counterDestroy >= 50){
+		movObjs.fillStyle = "rgba(95,103,255,0.3)";
+		movObjs.fillRect(0,0,1000,500);
 		movObjs.font = "bold 160px sans-serif";
 		movObjs.fillStyle = "#274CAA";
 		movObjs.fillText("YOU WIN", 150, 300);
-		enemy1.param.speed = 0;
-		enemy2.param.speed = 0;
-		enemy3.param.speed = 0;
-		enemy4.param.speed = 0;
+		Enemy.prototype.speed = 0;
 	}
 };
 //Движок
@@ -225,6 +222,7 @@ function engineMove(){
 	youWin();
 	requestAnimationFrame(engineMove);
 };
+
 
 window.onload = function(){
 	window.onkeydown = function(event){
