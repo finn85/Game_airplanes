@@ -6,10 +6,19 @@
 	<meta charset="utf-8">
 </head>
 <body>
-	<audio src = "sounds/airplaneenginesound.mp3" id="airplanesound"></audio>
-	<audio src="sounds/airplaneshot.mp3" id="shot"></audio>
-	<canvas height="500" width="1000" id="background"></canvas> 
-	<canvas height="500" width="1000" id="movObjs"></canvas>
+	<div id="gameName">
+		<h1>AIRPLANES DESTROYER</h1>
+	</div>
+	<div id = "gameWrapper">
+		<canvas height="500" width="1000" id="background"></canvas> 
+		<canvas height="500" width="1000" id="movObjs"></canvas>
+	</div>
+	<div id="instruction">
+		<h2>Инструкция</h2>
+		<p>Для управления самолетом необходимо использовать клавиши управления курсором (&#x2191,&#x2193,&#x2192,&#x2190).</p>
+		<p>Если вы пропустили 5 вражеских самолетов - вы проиграли.</p>
+		<p>Если вы уничтожили 50 вражеских самолетов - вы выиграли.</p>
+	</div>
 	<script type="text/javascript" src="background.js"></script>
 	<script type="text/javascript" src="movObjs.js"></script>
 </body>
