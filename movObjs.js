@@ -1,32 +1,70 @@
+//"use strict";
+
 var movObjs = document.getElementById("movObjs").getContext ("2d");
 
-//Основной объект
-	//координаты положения основного объекта
-var mainX = 0,
-	mainY = 200,
-	//скорость основного объекта
-	mainSpeed = 3;
-var shootX1 = mainX+95,
-	shootY1 = mainY+80;
+var gameLevel = 0;
+
 var counterDestroy = 0,
 	counterMissed = 0;
 
-function Airplane(){
-	var img = new Image();
-	img.src = "images/airplane01.png";
-	movObjs.drawImage(img,mainX,mainY);
+function airplane(){
 
-	Airplane.shoot = function(){
-		movObjs.fillStyle = "black";
-		if(shootX1 > 1000){
-			shootX1 = mainX+95;
-			shootY1 = mainY+80;
+	airplane.x = 0;
+	airplane.y = 200;
+	airplane.shootX = airplane.x + 95;
+	airplane.shootY = airplane.y + 80;
+	airplane.speed = 3;
+
+	airplane.draw = function(){
+		var img = new Image();
+		img.src = "images/airplane01.png";
+		movObjs.drawImage(img,airplane.x,airplane.y);
+	}
+
+	airplane.moveRight = function(){
+		if (airplane.x < 900) {
+			airplane.x += airplane.speed;
+			movObjs.clearRect(0,0,1000,500);
+			airplane.draw();
 		}
-		shootX1 += 15;
-		movObjs.fillRect(shootX1-10,shootY1,10,4);
-		movObjs.fillRect(shootX1,shootY1-20,10,4);
+	}
+
+	airplane.moveLeft = function(){
+		if(airplane.x>0){
+			airplane.x -= airplane.speed;
+			movObjs.clearRect(0,0,1000,500);
+			airplane.draw();
+		}
+	}
+
+	airplane.moveDown = function(){
+		if(airplane.y<400){
+			airplane.y += airplane.speed;
+			movObjs.clearRect(0,0,1000,500);
+			airplane.draw();
+		}
+	}
+
+	airplane.moveUp = function(){
+		if(airplane.y>0){
+			airplane.y -= airplane.speed;
+			movObjs.clearRect(0,0,1000,500);
+			airplane.draw();
+		}
+	}
+
+	airplane.shoot = function(){
+		movObjs.fillStyle = "black";
+		if(airplane.shootX > 1000){
+			airplane.shootX = airplane.x+95;
+			airplane.shootY = airplane.y+80;
+		}
+		airplane.shootX += 15;
+		movObjs.fillRect(airplane.shootX-10,airplane.shootY,10,4);
+		movObjs.fillRect(airplane.shootX,airplane.shootY-20,10,4);
 	}
 };
+airplane();
 // Конструктор для вражеских объектов
 var Enemy = function(){
 	this.param = {
@@ -36,7 +74,7 @@ var Enemy = function(){
 		topLimit: 200
 	}
 };
-Enemy.prototype.speed = 5;
+Enemy.prototype.speed = 2;
 Enemy.prototype.moving = function(){
 		var img = new Image();
 		img.src = "images/airplane02.png";
@@ -80,9 +118,9 @@ var enemy4 = new Enemy();
 	enemy4.param.topLimit = 50;
 //Попадание пули во вражеский объект
 function crash(){
-	if((enemy1.param.x + 40) > shootX1 && (enemy1.param.x) < shootX1 && (enemy1.param.y + 110) > shootY1 && (enemy1.param.y + 10) < shootY1){
-		shootX1 = mainX+95;
-		shootY1 = mainY+80;
+	if((enemy1.param.x + 40) > airplane.shootX && (enemy1.param.x) < airplane.shootX && (enemy1.param.y + 110) > airplane.shootY && (enemy1.param.y + 10) < airplane.shootY){
+		airplane.shootX = airplane.x+95;
+		airplane.shootY = airplane.y+80;
 		function crashEn1(){
 			enemy1.param.x = 1200;
 			enemy1.param.y = 200;
@@ -90,9 +128,9 @@ function crash(){
 		counterDestroy += 1;
 		crashEn1();
 	};
-	if((enemy2.param.x + 40) > shootX1 && (enemy2.param.x) < shootX1 && (enemy2.param.y + 110) > shootY1 && (enemy2.param.y + 10) < shootY1){
-		shootX1 = mainX+95;
-		shootY1 = mainY+80;
+	if((enemy2.param.x + 40) > airplane.shootX && (enemy2.param.x) < airplane.shootX && (enemy2.param.y + 110) > airplane.shootY && (enemy2.param.y + 10) < airplane.shootY){
+		airplane.shootX = airplane.x+95;
+		airplane.shootY = airplane.y+80;
 		function crashEn2(){
 			enemy2.param.x = 1200;
 			enemy2.param.y = 300;
@@ -100,9 +138,9 @@ function crash(){
 		crashEn2();
 		counterDestroy += 1;
 	};
-	if((enemy3.param.x + 40) > shootX1 && (enemy3.param.x) < shootX1 && (enemy3.param.y + 110) > shootY1 && (enemy3.param.y + 10) < shootY1){
-		shootX1 = mainX+95;
-		shootY1 = mainY+80;
+	if((enemy3.param.x + 40) > airplane.shootX && (enemy3.param.x) < airplane.shootX && (enemy3.param.y + 110) > airplane.shootY && (enemy3.param.y + 10) < airplane.shootY){
+		airplane.shootX = airplane.x+95;
+		airplane.shootY = airplane.y+80;
 		function crashEn3(){
 			enemy3.param.x = 1200;
 			enemy3.param.y = 100;
@@ -110,9 +148,9 @@ function crash(){
 		crashEn3();
 		counterDestroy += 1;
 	};
-	if((enemy4.param.x + 40) > shootX1 && (enemy4.param.x) < shootX1 && (enemy4.param.y + 110) > shootY1 && (enemy4.param.y + 10) < shootY1){
-		shootX1 = mainX+95;
-		shootY1 = mainY+80;
+	if((enemy4.param.x + 40) > airplane.shootX && (enemy4.param.x) < airplane.shootX && (enemy4.param.y + 110) > airplane.shootY && (enemy4.param.y + 10) < airplane.shootY){
+		airplane.shootX = airplane.x+95;
+		airplane.shootY = airplane.y+80;
 		function crashEn4(){
 			enemy4.param.x = 1200;
 			enemy4.param.y = 350;
@@ -131,7 +169,7 @@ function countDestroy(){
 };
 //GameOver
 function gameOver(){
-	if (counterMissed >= 5){
+	if (counterMissed >= 500){
 		movObjs.fillStyle = "rgba(255,140,95,0.5)";
 		movObjs.fillRect(0,0,1000,500);
 		movObjs.font = "bold 160px sans-serif";
@@ -157,7 +195,8 @@ var keys = {
 	"ArrowLeft":37,
 	"ArrowUp":38,
 	"ArrowRight":39,
-	"ArrowDown":40
+	"ArrowDown":40,
+	"Enter": 13
 };
 var keyDown = {};
 
@@ -165,64 +204,59 @@ function isKeyDown (keyName){
 	return  keyDown[keys[keyName]] == true;
 };
 
-function moveRight(){
-	if (mainX < 900) {
-		mainX += mainSpeed;
-		movObjs.clearRect(0,0,1000,500);
-		Airplane();
-	}
-};
-function moveLeft(){
-	if(mainX>0){
-		mainX -= mainSpeed;
-		movObjs.clearRect(0,0,1000,500);
-		Airplane();
-	}
-};
-function moveDown(){
-	if(mainY<400){
-		mainY += mainSpeed;
-		movObjs.clearRect(0,0,1000,500);
-		Airplane();
-	}
-};
-function moveUp(){
-	if(mainY>0){
-		mainY -= mainSpeed;
-		movObjs.clearRect(0,0,1000,500);
-		Airplane();
-	}
-};
+function mainMenu(){
+	movObjs.clearRect(0,0,1000,500);
+	movObjs.fillStyle = "rgba(105,105,105,0.8)";
+	movObjs.fillRect(0,0,1000,500);
+	movObjs.fillStyle = "white";
+	movObjs.font = "bold 30px sans-serif";
+	movObjs.fillText("THE GAME", 420, 100);
+	movObjs.font = "bold 60px sans-serif";
+	movObjs.fillText("AIRPLANES DESTROYER", 130, 160);
+	movObjs.font = "bold 20px sans-serif";
+	movObjs.fillText("ИНСТРУКЦИЯ:", 130, 220);
+	movObjs.font = "bold 15px sans-serif";
+	movObjs.fillText("Для управления самолетом необходимо использовать клавиши управления курсором.", 130, 260);
+	movObjs.fillText("Если вы пропустили 5 вражеских самолетов - вы проиграли.", 130, 280);
+	movObjs.fillText("Если вы уничтожили 50 вражеских самолетов - вы выиграли.", 130, 300);
+	movObjs.fillText("Для начала игры нажмите 'Enter'", 130, 320);
+	var menu = requestAnimationFrame(mainMenu);
+	if (isKeyDown("Enter")){
+		cancelAnimationFrame(menu);
+		gammeLevels();
+	};
 
-function engineMove(){
+}
+
+
+function gammeLevels(){
 
 	movObjs.clearRect(0,0,1000,500);
-	Airplane();
+	airplane.draw();
 
 	if(isKeyDown("ArrowUp")){
-		moveUp();
+		airplane.moveUp();
 	}
 	if(isKeyDown("ArrowDown")){
-		moveDown();
+		airplane.moveDown();
 	}
 	if(isKeyDown("ArrowLeft")){
-		moveLeft();
+		airplane.moveLeft();
 	}
 	if(isKeyDown("ArrowRight")){
-		moveRight();
+		airplane.moveRight();
 	}
 	enemy1.moving();
 	enemy2.moving();
 	enemy3.moving();
 	enemy4.moving();
-	Airplane.shoot();
+	airplane.shoot();
 	crash();
 	countDestroy();
 	gameOver();
 	youWin();
-	requestAnimationFrame(engineMove);
+	requestAnimationFrame(gammeLevels);
 };
-
 
 window.onload = function(){
 	window.onkeydown = function(event){
@@ -231,5 +265,5 @@ window.onload = function(){
 	window.onkeyup = function(event){
 		keyDown[event.keyCode] = false;
 	};
-	engineMove();
+	mainMenu();
 };
